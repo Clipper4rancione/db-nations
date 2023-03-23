@@ -1,8 +1,6 @@
 package org.lessons.java;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,6 +17,18 @@ public class Main {
                     join continents c2 on r.continent_id = r.region_id\s
                     order by c.name;
                     """;
+            try(PreparedStatement ps = connection.prepareStatement(query)){
+                try(ResultSet rs = ps.executeQuery()){
+                    while (rs.next()){
+                        String countryName = rs.getString(1);
+                        int countryId = rs.getInt(2);
+                        String regionName = rs.getString(3);
+                        String continentName = rs.getString(4);
+
+                        System.out.println(countryName + "  " + countryId + "  " + regionName + "  " + continentName);
+                    }
+                }
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
